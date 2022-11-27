@@ -3,7 +3,7 @@ import {Entity, model, property} from '@loopback/repository';
 @model({
   name: 'companies',
   settings: {
-    strict: false
+    // strict: false
   },
 })
 export class Company extends Entity {

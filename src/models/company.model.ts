@@ -1,4 +1,5 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, hasMany, model, property} from '@loopback/repository';
+import {Product} from './product.model';
 
 @model({
   name: 'companies',
@@ -33,6 +34,9 @@ export class Company extends Entity {
   // Indexer property to allow additional data
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [prop: string]: any;
+
+  @hasMany(() => Product, {keyTo: 'companyId'})
+  products?: Product[]
 
   constructor(data?: Partial<Company>) {
     super(data);

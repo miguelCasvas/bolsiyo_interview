@@ -20,16 +20,20 @@ export class ProductCategoryRepository extends DefaultCrudRepository<
   }
 
   createCategory(category: Partial<ProductCategory>): Promise<ProductCategory> {
-    const dateTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    const queryString = 'INSERT INTO `product_categories` (`name`, `created_at`) VALUES  (?, ?)';
-    const data = [category.name, dateTime];
+    const queryString =
+      'INSERT INTO `product_categories` (`code`, `name`, `description`, `active`) VALUES  (?, ?, ?, ?)';
+
+    const data = [
+      category.code,
+      category.name,
+      category.description,
+      Boolean(category.active)
+    ];
 
     return this.connect.execute(queryString, data).then(result => {
-
       return new ProductCategory({
         ...{
-          id:result.insertId,
-          createdAt: dateTime
+          id:result.insertId
         },
         ...category
       });
@@ -37,7 +41,7 @@ export class ProductCategoryRepository extends DefaultCrudRepository<
   }
 
   getActivateCategories(): Promise<ProductCategory[]> {
-    const queryString = 'SELECT * FROM `product_categories` WHERE deleted_at IS NULL';
+    const queryString = 'SELECT * FROM `product_categories` WHERE active = 1';
     return this.connect.execute(queryString, []).then(result => {
       return result;
     });

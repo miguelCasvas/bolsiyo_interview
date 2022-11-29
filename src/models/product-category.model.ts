@@ -19,23 +19,24 @@ export class ProductCategory extends Entity {
     type: 'string',
     required: true,
   })
+  code: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
   name: string;
 
   @property({
-    type: 'date',
-    mysql: {
-      columnName: 'created_at',
-    }
+    type: 'string',
+    required: true,
   })
-  createdAt: string;
+  description: string;
 
   @property({
-    type: 'date',
-    mysql: {
-      columnName: 'deleted_at',
-    }
+    type: 'boolean',
   })
-  deletedAt: string;
+  active: boolean;
 
   // Define well-known properties here
 

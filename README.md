@@ -3,6 +3,15 @@
 This application is generated using [LoopBack 4 CLI](https://loopback.io/doc/en/lb4/Command-line-interface.html) with the
 [initial project layout](https://loopback.io/doc/en/lb4/Loopback-application-layout.html).
 
+**Note:** this API has a POSTMAN collection with which active services can be verified
+* [Collection](./documentation/postman/Bolsiyo_interview.postman_collection.json)
+* [Enviroment vars](./documentation/postman/Demostration.postman_environment.json)
+
+## Copy environment variables
+```sh
+cp .env.example .env
+```
+
 ## Install dependencies
 
 By default, dependencies were installed when this application was generated.

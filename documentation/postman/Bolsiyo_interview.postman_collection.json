@@ -1,0 +1,542 @@
+{
+	"info": {
+		"_postman_id": "6d01c011-506b-48e6-9c8e-3ff4028c6a39",
+		"name": "Bolsiyo_interview",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1882185"
+	},
+	"item": [
+		{
+			"name": "Endpoints Authorized",
+			"item": [
+				{
+					"name": "Company",
+					"item": [
+						{
+							"name": "Company - Get All",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Company A\",\n  \"address\": \"Av Siempre Viva 123\"\n}"
+								},
+								"url": {
+									"raw": "{{domain}}/companies",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"companies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Company - Create",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJson = pm.response.json();",
+											"pm.environment.set(\"company_id\", responseJson.id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Company A\",\n  \"address\": \"Avenida Siempre Viva 123\"\n}"
+								},
+								"url": {
+									"raw": "{{domain}}/companies",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"companies"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Product Categories",
+					"item": [
+						{
+							"name": "Categories - Get",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{domain}}/categories?not_validate_status=true",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"categories"
+									],
+									"query": [
+										{
+											"key": "not_validate_status",
+											"value": "true",
+											"description": "true --> para no tener en cuenta el estado de la categoria\nfalse --> para traer solo las categorias activas"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Categories - Create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"code\": \"ABA\",\n    \"name\": \"Abarrotes\",\n    \"description\": \"Canasta familiar\",\n    \"active\": true\n}"
+								},
+								"url": {
+									"raw": "{{domain}}/categories",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Categories - Update status",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"active\": true\n}"
+								},
+								"url": {
+									"raw": "{{domain}}/categories/1/update-status",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"categories",
+										"1",
+										"update-status"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Products",
+					"item": [
+						{
+							"name": "Product - Create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"code\": \"PROD001\",\n    \"name\": \"Mentas-Chao\",\n    \"description\": \"Delicious Mentas\",\n    \"brand\": \"Colombina\",\n    \"productCategoryId\": 1,\n    \"quantity\": 45,\n    \"price\": 50\n}"
+								},
+								"url": {
+									"raw": "{{domain}}/companies/{{company_id}}/products",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"companies",
+										"{{company_id}}",
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Product - Update",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"code\": \"PROD001\",\n    \"name\": \"Choco-chips\",\n    \"description\": \"Delicious Choco-Chips\",\n    \"brand\": \"Ramo\",\n    \"productCategoryId\": 1,\n    \"quantity\": 18,\n    \"price\": 800.01,\n    \"companyId\": \"{{company_id}}\"\n}"
+								},
+								"url": {
+									"raw": "{{domain}}/products/3",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"products",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Product -  Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{domain}}/products/2",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"products",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Product -  Get By Company",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{domain}}/companies/{{company_id}}/products",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"companies",
+										"{{company_id}}",
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Company with products",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{domain}}/companies/{{company_id}}/with-products",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"companies",
+										"{{company_id}}",
+										"with-products"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/users/me",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{access_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Login User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();",
+							"pm.environment.set(\"access_token\", responseJson.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"{{user_email}}\",\n  \"password\": \"{{user_password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/users/login",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"users",
+						"login"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"{{user_email}}\",\n  \"password\": \"{{user_password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/users/sign-up/admin",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"users",
+						"sign-up",
+						"admin"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"var domain = 'http://localhost:3000';",
+					"pm.environment.set(\"domain\", domain);",
+					"",
+					"// user Admin Credentials",
+					"pm.environment.set(\"user_email\", \"admin-demo@bolsiyo.com\");",
+					"pm.environment.set(\"user_password\", \"pw_b0ls1y0_2022*/\");"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

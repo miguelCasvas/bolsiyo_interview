@@ -46,4 +46,20 @@ export class ProductCategoryRepository extends DefaultCrudRepository<
       return result;
     });
   }
+
+  getAllCategories(): Promise<ProductCategory[]> {
+    const queryString = 'SELECT * FROM `product_categories`';
+    return this.connect.execute(queryString, []).then(result => {
+      return result;
+    });
+  }
+
+  updateStatus(categoryId: number, status: boolean): Promise<ProductCategory> {
+    const queryString = 'UPDATE product_categories SET active=? WHERE id=?';
+    const data = [status, categoryId];
+
+    return this.connect.execute(queryString, data).then(result => {
+      return this.findById(categoryId);
+    });
+  }
 }

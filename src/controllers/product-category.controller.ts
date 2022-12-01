@@ -1,6 +1,6 @@
 import {repository} from '@loopback/repository';
 import {ProductCategoryRepository} from '../repositories';
-import {get, getModelSchemaRef, post, requestBody} from '@loopback/rest';
+import {get, getModelSchemaRef, param, patch, post, requestBody} from '@loopback/rest';
 import {ProductCategory} from '../models';
 
 export class ProductCategoryController {
@@ -10,7 +10,13 @@ export class ProductCategoryController {
   }
 
   @get('/categories')
-  async get(): Promise<ProductCategory[]> {
+  async get(
+    @param.query.boolean('not_validate_status') notValidateStatus: boolean,
+  ): Promise<ProductCategory[]> {
+    if (notValidateStatus) {
+      return this.categoryRepo.getAllCategories();
+    }
+
     return this.categoryRepo.getActivateCategories();
   }
 
@@ -28,6 +34,19 @@ export class ProductCategoryController {
   ): Promise<ProductCategory> {
     try {
       return await this.categoryRepo.createCategory(category);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  @patch('/categories/{category_id}/update-status')
+  async updateStatus(
+    @param.path.number('category_id') categoryId: number,
+    @requestBody() active: {active: boolean},
+  ): Promise<ProductCategory> {
+    try {
+      return await this.categoryRepo.updateStatus(categoryId, active.active);
     } catch (error) {
       console.log(error);
       throw error;

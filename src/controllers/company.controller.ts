@@ -3,6 +3,7 @@ import {get, getModelSchemaRef, post, requestBody} from '@loopback/rest';
 import {Company} from '../models';
 import {repository} from '@loopback/repository';
 import {CompanyRepository} from '../repositories';
+import {authenticate} from '@loopback/authentication';
 
 export class CompanyController {
   constructor(
@@ -11,12 +12,14 @@ export class CompanyController {
   }
 
   @get('/companies')
+  @authenticate('jwt')
   async get(): Promise<Company[]> {
     return this.companyRepo.find();
   }
 
 
   @post('/companies')
+  @authenticate('jwt')
   async create(
     @requestBody({
       content: {

@@ -2,6 +2,7 @@ import {repository} from '@loopback/repository';
 import {ProductCategoryRepository} from '../repositories';
 import {get, getModelSchemaRef, param, patch, post, requestBody} from '@loopback/rest';
 import {ProductCategory} from '../models';
+import {authenticate} from '@loopback/authentication';
 
 export class ProductCategoryController {
   constructor(
@@ -10,6 +11,7 @@ export class ProductCategoryController {
   }
 
   @get('/categories')
+  @authenticate('jwt')
   async get(
     @param.query.boolean('not_validate_status') notValidateStatus: boolean,
   ): Promise<ProductCategory[]> {
@@ -21,6 +23,7 @@ export class ProductCategoryController {
   }
 
   @post('/categories')
+  @authenticate('jwt')
   async create(
     @requestBody({
       content: {
@@ -41,6 +44,7 @@ export class ProductCategoryController {
   }
 
   @patch('/categories/{category_id}/update-status')
+  @authenticate('jwt')
   async updateStatus(
     @param.path.number('category_id') categoryId: number,
     @requestBody() active: {active: boolean},

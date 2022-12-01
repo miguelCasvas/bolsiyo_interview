@@ -3,6 +3,7 @@ import {CompanyRepository, ProductRepository} from '../repositories';
 import {get, del, getModelSchemaRef, param, post, requestBody, put} from '@loopback/rest';
 import {Product} from '../models';
 import {CompanyProductsDto} from '../data-transfer-objects/company-products-dto';
+import {authenticate} from '@loopback/authentication';
 
 export class ProductController {
   constructor(
@@ -11,13 +12,14 @@ export class ProductController {
   ) {}
 
   @post('/companies/{company_id}/products')
+  @authenticate('jwt')
   async create(
     @param.path.string('company_id') companyId: string,
     @requestBody({
       content: {
         'application/json': {
           schema: getModelSchemaRef(Product, {
-            exclude: ['id'],
+            exclude: ['id', 'companyId'],
           }),
         },
       },
@@ -33,6 +35,7 @@ export class ProductController {
   }
 
   @get('/companies/{company_id}/products')
+  @authenticate('jwt')
   async getCompanyProducts(
     @param.path.string('company_id') companyId: string,
   ): Promise<Product[]>{
@@ -40,6 +43,7 @@ export class ProductController {
   }
 
   @get('/companies/{company_id}/with-products')
+  @authenticate('jwt')
   async getCompanyWithProducts(
     @param.path.string('company_id') companyId: string,
   ): Promise<CompanyProductsDto>{
@@ -47,6 +51,7 @@ export class ProductController {
   }
 
   @del('/products/{product_id}')
+  @authenticate('jwt')
   async deleteProduct(
     @param.path.string('product_id') productId: number,
   ): Promise<Product>{
@@ -54,6 +59,7 @@ export class ProductController {
   }
 
   @put('/products/{product_id}')
+  @authenticate('jwt')
   updateProduct(
     @param.path.string('product_id') productId: number,
     @requestBody({

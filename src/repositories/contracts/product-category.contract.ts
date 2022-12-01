@@ -8,4 +8,6 @@ export abstract class ProductCategoryContract {
   abstract getAllCategories(): Promise<ProductCategory[]>
 
   abstract updateStatus(categoryId: number, status: boolean): Promise<ProductCategory>
+
+  abstract existProductCategoryByNameAndCode(code: string, name: string): Promise<boolean>
 }

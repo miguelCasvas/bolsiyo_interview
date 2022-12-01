@@ -62,4 +62,13 @@ export class ProductCategoryRepository extends DefaultCrudRepository<
       return this.findById(categoryId);
     });
   }
+
+  existProductCategoryByNameAndCode(code: string, name: string): Promise<boolean> {
+    let queryString = 'SELECT IF(COUNT(*) > 0, TRUE, FALSE) AS exist FROM';
+    queryString += ' `product_categories` WHERE code = ? AND name = ?';
+
+    return this.connect.execute(queryString, [code, name]).then(result => {
+      return result[0].exist;
+    });
+  }
 }

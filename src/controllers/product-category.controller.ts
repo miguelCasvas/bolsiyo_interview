@@ -1,8 +1,11 @@
 import {repository} from '@loopback/repository';
 import {ProductCategoryRepository} from '../repositories';
-import {get, getModelSchemaRef, param, patch, post, requestBody} from '@loopback/rest';
+import {get, param, patch, post, requestBody} from '@loopback/rest';
 import {ProductCategory} from '../models';
 import {authenticate} from '@loopback/authentication';
+import {intercept} from '@loopback/core';
+import {ValidateExistProductCategoryInterceptor} from '../interceptors';
+import {CategorySchemaCreateService} from './specs/product-category.specs';
 
 export class ProductCategoryController {
   constructor(
@@ -24,16 +27,9 @@ export class ProductCategoryController {
 
   @post('/categories')
   @authenticate('jwt')
+  @intercept(ValidateExistProductCategoryInterceptor.BINDING_KEY)
   async create(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(ProductCategory, {
-            exclude: ['id'],
-          }),
-        },
-      },
-    }) category: Omit<ProductCategory, 'id'>,
+    @requestBody(CategorySchemaCreateService) category: Omit<ProductCategory, 'id'>,
   ): Promise<ProductCategory> {
     try {
       return await this.categoryRepo.createCategory(category);

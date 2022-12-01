@@ -34,12 +34,20 @@ export class Product extends Entity {
   @property({
     type: 'string',
     required: true,
+    jsonSchema: {
+      maxLength: 10,
+      minLength: 4,
+      pattern: "^[a-zA-Z0-9 ]{2,20}$"
+    },
   })
   code: string;
 
   @property({
     type: 'string',
     required: true,
+    jsonSchema: {
+      minLength: 4,
+    },
   })
   name: string;
 

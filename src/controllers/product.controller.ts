@@ -1,9 +1,10 @@
 import {repository} from '@loopback/repository';
 import {CompanyRepository, ProductRepository} from '../repositories';
-import {get, del, getModelSchemaRef, param, post, requestBody, put} from '@loopback/rest';
+import {get, del, param, post, requestBody, put} from '@loopback/rest';
 import {Product} from '../models';
 import {CompanyProductsDto} from '../data-transfer-objects/company-products-dto';
 import {authenticate} from '@loopback/authentication';
+import {ProductSchemaCreateService, ProductSchemaUpdateService} from './specs/product-controller.specs';
 
 export class ProductController {
   constructor(
@@ -15,15 +16,7 @@ export class ProductController {
   @authenticate('jwt')
   async create(
     @param.path.string('company_id') companyId: string,
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Product, {
-            exclude: ['id', 'companyId'],
-          }),
-        },
-      },
-    }) product: Omit<Product, 'id'>,
+    @requestBody(ProductSchemaCreateService) product: Omit<Product, 'id'>,
   ): Promise<(Product) | null> {
     try {
       product.companyId = companyId;
@@ -62,15 +55,7 @@ export class ProductController {
   @authenticate('jwt')
   updateProduct(
     @param.path.string('product_id') productId: number,
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Product, {
-            exclude: ['id'],
-          }),
-        },
-      },
-    }) product: Omit<Product, 'id'>,
+    @requestBody(ProductSchemaUpdateService) product: Omit<Product, 'id'>,
   ): Promise<Product> {
     return this.productRepo.updateProduct(productId, product);
   }

@@ -10,17 +10,14 @@ const jwt = require('jsonwebtoken');
 const signAsync = promisify(jwt.sign);
 const verifyAsync = promisify(jwt.verify);
 
-
-
 @injectable({scope: BindingScope.TRANSIENT})
-export class JwtService implements TokenService{
+export class JwtService implements TokenService {
   constructor(
     @inject(TokenServiceBindings.TOKEN_SECRET)
     private jwtSecret: string,
     @inject(TokenServiceBindings.TOKEN_EXPIRES_IN)
     private jwtExpiresIn: string,
-  ) {
-  }
+  ) {}
 
   async verifyToken(token: string): Promise<UserProfile> {
     if (!token) {

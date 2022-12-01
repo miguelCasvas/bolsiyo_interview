@@ -4,14 +4,25 @@ import {get, HttpErrors, param, post, requestBody} from '@loopback/rest';
 import {User} from '../models';
 import {Credentials, UserRepository} from '../repositories';
 import {inject} from '@loopback/core';
-import {authenticate, TokenService, UserService} from '@loopback/authentication';
+import {
+  authenticate,
+  TokenService,
+  UserService,
+} from '@loopback/authentication';
 import {authorize} from '@loopback/authorization';
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
-import {CredentialsRequestBody, UserProfileSchema} from './specs/user-controller.specs';
+import {
+  CredentialsRequestBody,
+  UserProfileSchema,
+} from './specs/user-controller.specs';
 
 import _ from 'lodash';
 import {basicAuthorization} from '../middlewares/auth.midd';
-import {PasswordHasherBindings, TokenServiceBindings, UserServiceBindings} from '../Keys';
+import {
+  PasswordHasherBindings,
+  TokenServiceBindings,
+  UserServiceBindings,
+} from '../Keys';
 import {RequestBodyObject} from 'openapi3-ts/src/model/OpenApi';
 
 @model()
@@ -32,8 +43,7 @@ export class UserController {
     public jwtService: TokenService,
     @inject(UserServiceBindings.USER_SERVICE)
     public userService: UserService<User, Credentials>,
-  ) {
-  }
+  ) {}
 
   @post('/users/sign-up', {
     responses: {
@@ -51,7 +61,7 @@ export class UserController {
   })
   async create(
     @requestBody(CredentialsRequestBody as RequestBodyObject)
-      newUserRequest: Credentials,
+    newUserRequest: Credentials,
   ): Promise<User> {
     newUserRequest.role = 'user';
 
@@ -101,7 +111,7 @@ export class UserController {
   })
   async createAdmin(
     @requestBody(CredentialsRequestBody as RequestBodyObject)
-      newUserRequest: Credentials,
+    newUserRequest: Credentials,
   ): Promise<User> {
     // All new users have the "customer" role by default
     newUserRequest.role = 'admin';
@@ -134,7 +144,6 @@ export class UserController {
       }
     }
   }
-
 
   @get('/users/{userId}', {
     responses: {
@@ -174,9 +183,8 @@ export class UserController {
   @authenticate('jwt')
   async printCurrentUser(
     @inject(SecurityBindings.USER)
-      currentUserProfile: UserProfile,
+    currentUserProfile: UserProfile,
   ): Promise<User> {
-
     const userId = currentUserProfile[securityId];
     return this.userRepository.findById(userId);
   }
@@ -201,7 +209,8 @@ export class UserController {
     },
   })
   async login(
-    @requestBody(CredentialsRequestBody   as RequestBodyObject) credentials: Credentials,
+    @requestBody(CredentialsRequestBody as RequestBodyObject)
+    credentials: Credentials,
   ): Promise<{token: string}> {
     // ensure the user exists, and the password is correct
     const user = await this.userService.verifyCredentials(credentials);

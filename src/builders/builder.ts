@@ -1,8 +1,9 @@
 export abstract class Builder<T> {
-  protected abstract object:T;
+  protected abstract object: T;
 
   public abstract reset(): this;
 
+  /* eslint-disable  @typescript-eslint/no-explicit-any */
   public abstract build(...item: any): this;
 
   constructor() {

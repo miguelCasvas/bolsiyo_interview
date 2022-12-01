@@ -11,8 +11,8 @@ export const ProductSchemaCreateService: Partial<RequestBodyObject> = {
         exclude: ['id', 'companyId'],
       }),
     },
-  }
-}
+  },
+};
 
 export const ProductSchemaUpdateService: Partial<RequestBodyObject> = {
   description: 'Service for the updating of a product.',
@@ -23,5 +23,5 @@ export const ProductSchemaUpdateService: Partial<RequestBodyObject> = {
         exclude: ['id'],
       }),
     },
-  }
-}
+  },
+};

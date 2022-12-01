@@ -12,10 +12,12 @@ export class CompanyProductsDtoBuilder extends Builder<CompanyProductsDto> {
     return this;
   }
 
-  public build(item: Company, add?: {
-    products?: Product[]
-  }): this {
-
+  public build(
+    item: Company,
+    add?: {
+      products?: Product[];
+    },
+  ): this {
     this.object.id = item.id;
     this.object.name = item.name;
     this.object.address = item.address;
@@ -30,7 +32,9 @@ export class CompanyProductsDtoBuilder extends Builder<CompanyProductsDto> {
     }
 
     const productsDTO: ProductDto[] = [];
-    products.forEach((product: Product) => productsDTO.push((new ProductDtoBuilder()).build(product).getObject()));
+    products.forEach((product: Product) =>
+      productsDTO.push(new ProductDtoBuilder().build(product).getObject()),
+    );
 
     this.object.products = productsDTO;
     return this;

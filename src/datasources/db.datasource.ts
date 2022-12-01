@@ -7,11 +7,11 @@ const config = {
   name: 'db',
   connector: 'mysql',
   url: '',
-  host: (process.env.DB_HOST ?? 'localhost'),
-  port: (process.env.DB_PORT ?? 3306),
-  user: (process.env.DB_USER ?? 'root'),
-  password: (process.env.DB_PASSWORD ?? 'root'),
-  database: (process.env.DB_DATABASE ?? 'bolsiyo_interview'),
+  host: process.env.DB_HOST ?? 'localhost',
+  port: process.env.DB_PORT ?? 3306,
+  user: process.env.DB_USER ?? 'root',
+  password: process.env.DB_PASSWORD ?? 'root',
+  database: process.env.DB_DATABASE ?? 'bolsiyo_interview',
 };
 
 // Observe application's life cycle to disconnect the datasource when
@@ -19,8 +19,10 @@ const config = {
 // gracefully. The `stop()` method is inherited from `juggler.DataSource`.
 // Learn more at https://loopback.io/doc/en/lb4/Life-cycle.html
 @lifeCycleObserver('datasource')
-export class DbDataSource extends juggler.DataSource
-  implements LifeCycleObserver {
+export class DbDataSource
+  extends juggler.DataSource
+  implements LifeCycleObserver
+{
   static dataSourceName = 'db';
   static readonly defaultConfig = config;
 

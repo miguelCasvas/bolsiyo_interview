@@ -36,7 +36,7 @@ export class Company extends Entity {
   [prop: string]: any;
 
   @hasMany(() => Product, {keyTo: 'companyId'})
-  products?: Product[]
+  products?: Product[];
 
   constructor(data?: Partial<Company>) {
     super(data);

@@ -37,7 +37,7 @@ export class Product extends Entity {
     jsonSchema: {
       maxLength: 10,
       minLength: 4,
-      pattern: "^[a-zA-Z0-9 ]{2,20}$"
+      pattern: '^[a-zA-Z0-9 ]{2,20}$',
     },
   })
   code: string;
@@ -67,7 +67,7 @@ export class Product extends Entity {
     () => ProductCategory,
     {
       keyFrom: 'productCategoryId',
-      keyTo: 'id'
+      keyTo: 'id',
     },
     {
       type: 'number',
@@ -76,7 +76,8 @@ export class Product extends Entity {
         columnName: 'product_categories_id',
       },
       limit: 255,
-  })
+    },
+  )
   productCategoryId: number;
 
   @property({
@@ -95,7 +96,7 @@ export class Product extends Entity {
     () => Company,
     {
       keyFrom: 'companyId',
-      keyTo: 'id'
+      keyTo: 'id',
     },
     {
       type: 'string',
@@ -105,14 +106,15 @@ export class Product extends Entity {
         columnName: 'companies_id',
       },
       limit: 255,
-    })
+    },
+  )
   companyId: string;
 
   @property({
     type: 'date',
     mysql: {
       columnName: 'deleted_at',
-    }
+    },
   })
   deletedAt: string;
 

@@ -8,15 +8,13 @@ import {authenticate} from '@loopback/authentication';
 export class CompanyController {
   constructor(
     @repository(CompanyRepository) private companyRepo: CompanyRepository,
-  ) {
-  }
+  ) {}
 
   @get('/companies')
   @authenticate('jwt')
   async get(): Promise<Company[]> {
     return this.companyRepo.find();
   }
-
 
   @post('/companies')
   @authenticate('jwt')
@@ -29,7 +27,8 @@ export class CompanyController {
           }),
         },
       },
-    }) company: Omit<Company, 'id'>,
+    })
+    company: Omit<Company, 'id'>,
   ): Promise<Company> {
     try {
       return await this.companyRepo.create(company);

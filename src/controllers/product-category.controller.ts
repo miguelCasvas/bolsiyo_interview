@@ -9,9 +9,9 @@ import {CategorySchemaCreateService} from './specs/product-category.specs';
 
 export class ProductCategoryController {
   constructor(
-    @repository(ProductCategoryRepository) private categoryRepo: ProductCategoryRepository,
-  ) {
-  }
+    @repository(ProductCategoryRepository)
+    private categoryRepo: ProductCategoryRepository,
+  ) {}
 
   @get('/categories')
   @authenticate('jwt')
@@ -29,7 +29,8 @@ export class ProductCategoryController {
   @authenticate('jwt')
   @intercept(ValidateExistProductCategoryInterceptor.BINDING_KEY)
   async create(
-    @requestBody(CategorySchemaCreateService) category: Omit<ProductCategory, 'id'>,
+    @requestBody(CategorySchemaCreateService)
+    category: Omit<ProductCategory, 'id'>,
   ): Promise<ProductCategory> {
     try {
       return await this.categoryRepo.createCategory(category);

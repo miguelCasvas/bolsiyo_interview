@@ -9,7 +9,6 @@ export class HashPasswordService {
    */
 }
 
-
 import {genSalt, hash} from 'bcryptjs';
 import {compare} from 'bcryptjs';
 import {inject} from '@loopback/core';

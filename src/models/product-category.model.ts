@@ -5,7 +5,7 @@ import {Product} from './product.model';
   name: 'product_categories',
   settings: {
     // strict: false
-  }
+  },
 })
 export class ProductCategory extends Entity {
   @property({
@@ -45,7 +45,7 @@ export class ProductCategory extends Entity {
   [prop: string]: any;
 
   @hasMany(() => Product, {keyTo: 'productCategoryId', keyFrom: 'id'})
-  products?: Product[]
+  products?: Product[];
 
   constructor(data?: Partial<ProductCategory>) {
     super(data);
@@ -56,4 +56,5 @@ export interface ProductCategoryRelations {
   // describe navigational properties here
 }
 
-export type ProductCategoryWithRelations = ProductCategory & ProductCategoryRelations;
+export type ProductCategoryWithRelations = ProductCategory &
+  ProductCategoryRelations;

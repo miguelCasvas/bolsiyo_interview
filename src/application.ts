@@ -1,14 +1,25 @@
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig, createBindingFromClass} from '@loopback/core';
-import {RestExplorerBindings, RestExplorerComponent} from '@loopback/rest-explorer';
+import {
+  RestExplorerBindings,
+  RestExplorerComponent,
+} from '@loopback/rest-explorer';
 import {RepositoryMixin} from '@loopback/repository';
 import {OpenApiSpec, RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
-import {AuthenticationComponent, registerAuthenticationStrategy} from '@loopback/authentication';
+import {
+  AuthenticationComponent,
+  registerAuthenticationStrategy,
+} from '@loopback/authentication';
 import {AuthorizationComponent} from '@loopback/authorization';
-import {PasswordHasherBindings, TokenServiceBindings, TokenServiceConstants, UserServiceBindings} from './Keys';
+import {
+  PasswordHasherBindings,
+  TokenServiceBindings,
+  TokenServiceConstants,
+  UserServiceBindings,
+} from './Keys';
 import {BcryptHasher, JwtService, MyUserService} from './services';
 import {JWTAuthenticationStrategy} from './authentication-strategies/jwt-strategy';
 import {SECURITY_SCHEME_SPEC, SECURITY_SPEC} from './utils/security-spec';
@@ -64,7 +75,6 @@ export class BolsiyoInterviewApplication extends BootMixin(
   }
 
   private setUpBindings(): void {
-
     // Bind package.json to the application context
     // this.bind(PackageKey).to(pkg);
 

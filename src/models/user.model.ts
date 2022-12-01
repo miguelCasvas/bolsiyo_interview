@@ -49,5 +49,4 @@ export interface UserRelations {
   // describe navigational properties here
 }
 
-
-export type UserWithRelations = User & UserRelations
+export type UserWithRelations = User & UserRelations;

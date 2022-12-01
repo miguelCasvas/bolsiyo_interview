@@ -4,17 +4,17 @@ import {DbDataSource} from '../datasources';
 import {ProductCategory, ProductCategoryRelations} from '../models';
 import {ProductCategoryContract} from './contracts/product-category.contract';
 
-export class ProductCategoryRepository extends DefaultCrudRepository<
-  ProductCategory,
-  typeof ProductCategory.prototype.id,
-  ProductCategoryRelations
-> implements ProductCategoryContract {
-
+export class ProductCategoryRepository
+  extends DefaultCrudRepository<
+    ProductCategory,
+    typeof ProductCategory.prototype.id,
+    ProductCategoryRelations
+  >
+  implements ProductCategoryContract
+{
   private connect: DbDataSource;
 
-  constructor(
-    @inject('datasources.db') dataSource: DbDataSource,
-  ) {
+  constructor(@inject('datasources.db') dataSource: DbDataSource) {
     super(ProductCategory, dataSource);
     this.connect = dataSource;
   }
@@ -27,15 +27,15 @@ export class ProductCategoryRepository extends DefaultCrudRepository<
       category.code,
       category.name,
       category.description,
-      Boolean(category.active)
+      Boolean(category.active),
     ];
 
     return this.connect.execute(queryString, data).then(result => {
       return new ProductCategory({
         ...{
-          id:result.insertId
+          id: result.insertId,
         },
-        ...category
+        ...category,
       });
     });
   }
@@ -63,7 +63,10 @@ export class ProductCategoryRepository extends DefaultCrudRepository<
     });
   }
 
-  existProductCategoryByNameAndCode(code: string, name: string): Promise<boolean> {
+  existProductCategoryByNameAndCode(
+    code: string,
+    name: string,
+  ): Promise<boolean> {
     let queryString = 'SELECT IF(COUNT(*) > 0, TRUE, FALSE) AS exist FROM';
     queryString += ' `product_categories` WHERE code = ? AND name = ?';
 

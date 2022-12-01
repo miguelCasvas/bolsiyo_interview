@@ -4,24 +4,25 @@ import {DbDataSource} from '../datasources';
 import {Product, ProductRelations} from '../models';
 import {ProductContract} from './contracts/product.contract';
 
-export class ProductRepository extends DefaultCrudRepository<
-  Product,
-  typeof Product.prototype.id,
-  ProductRelations
-> implements ProductContract {
-
+export class ProductRepository
+  extends DefaultCrudRepository<
+    Product,
+    typeof Product.prototype.id,
+    ProductRelations
+  >
+  implements ProductContract
+{
   private connect: DbDataSource;
 
-  constructor(
-    @inject('datasources.db') dataSource: DbDataSource,
-  ) {
+  constructor(@inject('datasources.db') dataSource: DbDataSource) {
     super(Product, dataSource);
     this.connect = dataSource;
   }
 
   createProduct(product: Partial<Product>): Promise<Product> {
     let queryString = 'INSERT INTO `products` ';
-    queryString += '(code, name, description, brand, product_categories_id, quantity, price, companies_id) ';
+    queryString +=
+      '(code, name, description, brand, product_categories_id, quantity, price, companies_id) ';
     queryString += 'VALUE (?,?,?,?,?,?,?,?);';
 
     const data = [
@@ -45,21 +46,24 @@ export class ProductRepository extends DefaultCrudRepository<
     });
   }
 
-  getProductsByCompanyIdAndActiveCategory(companyId: string): Promise<Product[]> {
-    let queryString = 'SELECT p.*, c.id AS company_id, c.name as company_name, c.address as company_address';
+  getProductsByCompanyIdAndActiveCategory(
+    companyId: string,
+  ): Promise<Product[]> {
+    let queryString =
+      'SELECT p.*, c.id AS company_id, c.name as company_name, c.address as company_address';
     queryString += ' FROM products AS p';
-    queryString += ' INNER JOIN product_categories pc on p.product_categories_id = pc.id';
+    queryString +=
+      ' INNER JOIN product_categories pc on p.product_categories_id = pc.id';
     queryString += ' INNER JOIN companies c on p.companies_id = c.id';
     queryString += ' WHERE c.id = ? AND pc.active = 1 AND p.deleted_at IS NULL';
 
     const filter = [companyId];
 
     return this.connect.execute(queryString, filter).then(result => {
-
       const data: Product[] = [];
       result.forEach((row: Product) => {
         const prod = new Product(row);
-        prod.deletedAt = row.deleted_at
+        prod.deletedAt = row.deleted_at;
         prod.companyId = row.companies_id;
 
         data.push(prod);
@@ -78,10 +82,14 @@ export class ProductRepository extends DefaultCrudRepository<
     });
   }
 
-  updateProduct(productId: number, product: Partial<Product>): Promise<Product> {
+  updateProduct(
+    productId: number,
+    product: Partial<Product>,
+  ): Promise<Product> {
     let queryString = 'UPDATE products SET';
     queryString += ' code = ?, name = ?, description = ?, brand = ?,';
-    queryString += ' product_categories_id = ?, quantity = ?, price = ?, companies_id = ?';
+    queryString +=
+      ' product_categories_id = ?, quantity = ?, price = ?, companies_id = ?';
     queryString += ' WHERE id = ? AND deleted_at IS NULL;';
 
     const data = [
@@ -93,17 +101,17 @@ export class ProductRepository extends DefaultCrudRepository<
       product.quantity,
       product.price,
       product.companyId,
-      productId
+      productId,
     ];
 
     return this.connect.execute(queryString, data).then(result => {
       if (result?.affectedRows < 1) {
-        throw Error(`The product with ID ${productId}} was not updated!`)
+        throw Error(`The product with ID ${productId}} was not updated!`);
       }
 
       return new Product({
         ...{id: productId},
-        ...product
+        ...product,
       });
     });
   }

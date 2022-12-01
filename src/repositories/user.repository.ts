@@ -1,20 +1,28 @@
 import {Getter, inject} from '@loopback/core';
-import {DefaultCrudRepository, HasOneRepositoryFactory, juggler, repository} from '@loopback/repository';
+import {
+  DefaultCrudRepository,
+  HasOneRepositoryFactory,
+  juggler,
+  repository,
+} from '@loopback/repository';
 import {User, UserCredentials, UserRelations} from '../models';
 import {UserCredentialsRepository} from './user-credentials.repository';
-
 
 export type Credentials = {
   email: string;
   password: string;
-  role?: string
+  role?: string;
 };
 
-export class UserRepository extends DefaultCrudRepository<User,
+export class UserRepository extends DefaultCrudRepository<
+  User,
   typeof User.prototype.id,
-  UserRelations> {
-
-  public readonly userCredentials: HasOneRepositoryFactory<UserCredentials, typeof User.prototype.id>;
+  UserRelations
+> {
+  public readonly userCredentials: HasOneRepositoryFactory<
+    UserCredentials,
+    typeof User.prototype.id
+  >;
 
   constructor(
     @inject('datasources.db') dataSource: juggler.DataSource,
@@ -22,8 +30,14 @@ export class UserRepository extends DefaultCrudRepository<User,
     protected userCredentialsRepositoryGetter: Getter<UserCredentialsRepository>,
   ) {
     super(User, dataSource);
-    this.userCredentials = this.createHasOneRepositoryFactoryFor('userCredentials', userCredentialsRepositoryGetter);
-    this.registerInclusionResolver('userCredentials', this.userCredentials.inclusionResolver);
+    this.userCredentials = this.createHasOneRepositoryFactoryFor(
+      'userCredentials',
+      userCredentialsRepositoryGetter,
+    );
+    this.registerInclusionResolver(
+      'userCredentials',
+      this.userCredentials.inclusionResolver,
+    );
   }
 
   async findCredentials(

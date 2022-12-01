@@ -4,7 +4,10 @@ import {get, del, param, post, requestBody, put} from '@loopback/rest';
 import {Product} from '../models';
 import {CompanyProductsDto} from '../data-transfer-objects/company-products-dto';
 import {authenticate} from '@loopback/authentication';
-import {ProductSchemaCreateService, ProductSchemaUpdateService} from './specs/product-controller.specs';
+import {
+  ProductSchemaCreateService,
+  ProductSchemaUpdateService,
+} from './specs/product-controller.specs';
 
 export class ProductController {
   constructor(
@@ -17,7 +20,7 @@ export class ProductController {
   async create(
     @param.path.string('company_id') companyId: string,
     @requestBody(ProductSchemaCreateService) product: Omit<Product, 'id'>,
-  ): Promise<(Product) | null> {
+  ): Promise<Product | null> {
     try {
       product.companyId = companyId;
       return await this.productRepo.createProduct(product);
@@ -31,7 +34,7 @@ export class ProductController {
   @authenticate('jwt')
   async getCompanyProducts(
     @param.path.string('company_id') companyId: string,
-  ): Promise<Product[]>{
+  ): Promise<Product[]> {
     return this.productRepo.getProductsByCompanyIdAndActiveCategory(companyId);
   }
 
@@ -39,7 +42,7 @@ export class ProductController {
   @authenticate('jwt')
   async getCompanyWithProducts(
     @param.path.string('company_id') companyId: string,
-  ): Promise<CompanyProductsDto>{
+  ): Promise<CompanyProductsDto> {
     return this.companyRepo.getCompanyWithProducts(companyId);
   }
 
@@ -47,7 +50,7 @@ export class ProductController {
   @authenticate('jwt')
   async deleteProduct(
     @param.path.string('product_id') productId: number,
-  ): Promise<Product>{
+  ): Promise<Product> {
     return this.productRepo.softDeleteProduct(productId);
   }
 

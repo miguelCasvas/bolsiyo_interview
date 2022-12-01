@@ -4,7 +4,6 @@ import {AuthenticationStrategy, TokenService} from '@loopback/authentication';
 import {UserProfile} from '@loopback/security';
 import {TokenServiceBindings} from '../Keys';
 
-
 export class JWTAuthenticationStrategy implements AuthenticationStrategy {
   name = 'jwt';
 

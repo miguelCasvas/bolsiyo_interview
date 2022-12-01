@@ -16,11 +16,15 @@ import {repository} from '@loopback/repository';
  * `boot`
  */
 @injectable({tags: {key: ValidateExistProductCategoryInterceptor.BINDING_KEY}})
-export class ValidateExistProductCategoryInterceptor implements Provider<Interceptor> {
+export class ValidateExistProductCategoryInterceptor
+  implements Provider<Interceptor>
+{
   static readonly BINDING_KEY = `interceptors.${ValidateExistProductCategoryInterceptor.name}`;
 
-  constructor(@repository(ProductCategoryRepository) private categoryRepo: ProductCategoryRepository) {
-  }
+  constructor(
+    @repository(ProductCategoryRepository)
+    private categoryRepo: ProductCategoryRepository,
+  ) {}
 
   /**
    * This method is used by LoopBack context to produce an interceptor function
@@ -41,21 +45,20 @@ export class ValidateExistProductCategoryInterceptor implements Provider<Interce
     invocationCtx: InvocationContext,
     next: () => ValueOrPromise<InvocationResult>,
   ) {
-    try {
-      const code = invocationCtx.args[0].code;
-      const name = invocationCtx.args[0].name;
+    const code = invocationCtx.args[0].code;
+    const name = invocationCtx.args[0].name;
 
-      const registerExist = await this.categoryRepo.existProductCategoryByNameAndCode(code, name);
-      if (registerExist) {
-        const err: ValidationError = new ValidationError('This category is already registered');
-        err.statusCode = 422;
-        throw err;
-      }
-
-      const result = await next();
-      return result;
-    } catch (err) {
+    const registerExist =
+      await this.categoryRepo.existProductCategoryByNameAndCode(code, name);
+    if (registerExist) {
+      const err: ValidationError = new ValidationError(
+        'This category is already registered',
+      );
+      err.statusCode = 422;
       throw err;
     }
+
+    const result = await next();
+    return result;
   }
 }

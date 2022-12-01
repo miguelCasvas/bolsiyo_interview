@@ -24,6 +24,9 @@ export class ProductCategory extends Entity {
   @property({
     type: 'string',
     required: true,
+    jsonSchema: {
+      minLength: 2,
+    },
   })
   name: string;
 
